@@ -1,56 +1,59 @@
 package com.example.demo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
+import com.example.demo.validators.constraints.DateOfBirthValidator;
+import com.example.demo.validators.constraints.SalaryValidator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
 @Entity
-@Table(name = "users")
-public class User {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class User implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_gen")
-	@SequenceGenerator(name = "user_id_gen", sequenceName = "user_id_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@JsonIgnore
 	private Long id;
 	
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Date getDob() {
-		return dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	//	@Column(nullable = false)
-//	@NotEmpty(message = "Name can't be empty")
-	private Date dob;
+	@Column(length = 100, nullable = false)
+    private String name;
 	
-//	@Column(nullable = false, unique = true)
+	@Column(length = 100, nullable = false)
+//	@SalaryValidator
+    private Double salary;
+	
+	@Column(unique = true, nullable = false)
 //	@NotEmpty(message = "Email can't be empty")
 //	@Email(message = "Invalid Email")
-	private String email;
+    private String email;
 	
-//	@Column(nullable = false)
-//	@NotEmpty(message = "Url can't be empty")
-//	@Size(min = 4)
-	private String gender;
+	@Column(nullable = false)
+//	@DateOfBirthValidator
+//	 @Temporal(TemporalType.DATE)
+    private Date birthDate;
+	
+	@Column(length = 10, nullable = false)
+//	@NotEmpty(message = "Gender can't be empty")
+    private String gender;
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+	private Address address;
 	
 }
